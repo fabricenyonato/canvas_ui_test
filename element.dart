@@ -2,17 +2,17 @@ import 'dart:math';
 import './global.dart';
 
 abstract class CUIElement {
-    double w;
-    double h;
+    double width;
+    double height;
     int x;
     int y;
     String fillStyle;
     String strokeStyle;
-    bool Function() onClick;
+    void Function() onClick;
 
     CUIElement({
-        this.w = 0.0,
-        this.h = 0.0,
+        this.width = 0.0,
+        this.height = 0.0,
         this.x = 0,
         this.y = 0,
         this.fillStyle = '#000',
@@ -25,7 +25,7 @@ abstract class CUIElement {
 
         g.context
         ..fillStyle = fillStyle
-        ..fillRect(x, y, w, h);
+        ..fillRect(x, y, width, height);
         
     }
 
@@ -34,12 +34,20 @@ abstract class CUIElement {
 
         g.context
         ..strokeStyle = strokeStyle
-        ..strokeRect(x, y, w, h);
+        ..strokeRect(x, y, width, height);
 
         g.elements.add(this);
     }
 
     bool pointInSurface(Point point) {
+        if (point.x < x || point.y < y) {
+            return false;
+        }
+
+        if (point.x > (x + width) || point.y > (y + height)) {
+            return false;
+        }
+
         return true;
     }
 }
